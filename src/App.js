@@ -7,6 +7,7 @@ function App() {
 
     const [data,setdata] = useState([]);
     const [quote,setquote] = useState(0);
+    const [enable,setenable] = useState(false);
 
     useEffect(()=> {
         if (quote == 5 || quote == 10) {
@@ -15,16 +16,31 @@ function App() {
                 setdata(response.data[0].content);
             });
         }
+        else
+        {
+            setdata('');
+        }
     } , [quote])
+
+    function handleIncrement()
+    {
+        setquote((quote<10) ? quote+1 : quote)
+        setenable(true);
+    }
+
+    function handleDecrement()
+    {
+        setquote((quote>0) ? quote-1 : quote)
+    }
     
   return (
     <div className="counter-widget">
         
         <div className="count">{quote}</div>
 
-        <button onClick={() => setquote((quote<10) ? quote+1 : quote)} className="increment">Increment</button>
+        <button onClick={handleIncrement} className="increment">Increment</button>
       
-        <button onClick={() => setquote((quote>0) ? quote-1 : quote)} className="decrement">Decrement</button>
+        <button onClick={handleDecrement} disabled={!enable} className="decrement">Decrement</button>
 
         <div className="quote">Random Quote: {data}</div>
 
